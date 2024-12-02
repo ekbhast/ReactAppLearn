@@ -7,8 +7,8 @@ class EmployersAddForm extends Component{
         super(props);
         this.state = {
             name: '',
-            salary: ''
-        }
+            salary: '',
+        }        
     }
 
     onValueChange = (e) => {
@@ -19,16 +19,24 @@ class EmployersAddForm extends Component{
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.onAdd(this.state.name, this.state.salary);
-        this.setState({
-            name: '',
-            salary: ''
-        })
+        if (this.state.name.length < 3 || this.state.salary === '') {
+            return false;
+        } else {
+            this.props.onAdd(this.state.name, this.state.salary);
+            this.setState({
+                name: '',
+                salary: ''
+            })
+        }
+        
     }
 
     render () {
-
+        let disabledButton = 'disabled';
         const {name, salary} = this.state;
+        if (name.length > 3 && salary > 0 ) {
+            disabledButton =  '';
+        }
 
         return ( 
             <div className="app-add-form">
@@ -52,7 +60,7 @@ class EmployersAddForm extends Component{
                         onChange={this.onValueChange}/>
         
                     <button type="submit"
-                            className="btn btn-outline-light"
+                            className={`btn btn-outline-light ${disabledButton}`}
                             >Добавить</button>
                 </form>
             </div>  
